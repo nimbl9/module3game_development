@@ -1,0 +1,87 @@
+[gd_scene load_steps=4 format=3 uid="uid://c5t17x2hd44jm"]
+
+[ext_resource type="FontFile" uid="uid://crxqyvmyb2uuc" path="res://font/Jaro-Regular-VariableFont_opsz.ttf" id="1_2y140"]
+[ext_resource type="Script" uid="uid://ckwiemre210hr" path="res://menu/lobby/lobby.gd" id="1_gh7de"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gh7de"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+border_color = Color(0.8, 0.8, 0.8, 0)
+
+[node name="Lobby" type="CanvasLayer"]
+script = ExtResource("1_gh7de")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 294.0
+offset_top = 133.0
+offset_right = -294.0
+offset_bottom = -133.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = 57.0
+offset_right = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(512, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 1
+focus_mode = 2
+mouse_filter = 0
+theme_override_fonts/font = ExtResource("1_2y140")
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("StyleBoxFlat_gh7de")
+text = "Multiplayer"
+autowrap_trim_flags = 128
+
+[node name="NameInput" type="LineEdit" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+placeholder_text = "Введите имя"
+
+[node name="IPInput" type="LineEdit" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+placeholder_text = "IP адрес (127.0.0.1)"
+
+[node name="HostButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Создать игру"
+
+[node name="JoinButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Присоединиться"
+
+[node name="StartButton" type="Button" parent="Panel/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Начать игру"
+
+[node name="StatusLabel" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="PlayersList" type="ItemList" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[connection signal="pressed" from="Panel/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]

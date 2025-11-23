@@ -1,0 +1,14 @@
+Camera3D
+MultiplayerSynchronizer
+Label
+Node3D
+Label3D
+ItemList
+Button
+LineEdit      - Matches the "input" keyword.
+VBoxContainer
+Panel
+CanvasLayer
+AudioStreamPlayer3D
+MeshInstance3D
+NavigationRegion3D

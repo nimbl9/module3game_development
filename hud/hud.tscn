@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://c14kmelueavwu"]
+
+[ext_resource type="Script" uid="uid://13eaa32rdkr8" path="res://hud/hud.gd" id="1_6ca3a"]
+
+[node name="Hud" type="CanvasLayer"]
+script = ExtResource("1_6ca3a")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 651.0
+offset_bottom = 50.0
+theme_override_constants/separation = 10
+
+[node name="LabelKillCount" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="LabelTimer" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Leaderboard" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Игроки:"

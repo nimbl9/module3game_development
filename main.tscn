@@ -1,0 +1,87 @@
+[gd_scene load_steps=13 format=3 uid="uid://cv8mvqsx0obds"]
+
+[ext_resource type="PackedScene" uid="uid://cc0g868itwldw" path="res://cat/cat.tscn" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://c2gdvihkq0vvf" path="res://player_spawner.gd" id="1_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://wsl0j8nibipu" path="res://mouse/mouse.tscn" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://c14kmelueavwu" path="res://hud/hud.tscn" id="3_h2yge"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1bvp3"]
+sky_top_color = Color(0.10527871, 0.40915316, 0.62349343, 1)
+sky_horizon_color = Color(0.51822484, 0.6162299, 0.68717355, 1)
+ground_bottom_color = Color(0.119921304, 0.208067, 0.27750152, 1)
+ground_horizon_color = Color(0.51822484, 0.6162299, 0.68717355, 1)
+energy_multiplier = 1.3
+
+[sub_resource type="Sky" id="Sky_lquwl"]
+sky_material = SubResource("ProceduralSkyMaterial_1bvp3")
+
+[sub_resource type="Environment" id="Environment_7mycd"]
+background_mode = 2
+sky = SubResource("Sky_lquwl")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_272bh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0xm2m"]
+albedo_color = Color(0.0023957563, 0.5870765, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0xm2m"]
+material = SubResource("StandardMaterial3D_0xm2m")
+size = Vector3(1, 0.1, 1)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_h2yge"]
+data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1bvp3"]
+
+[node name="main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_7mycd")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 19.84561, 0)
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+transform = Transform3D(50, 0, 0, 0, 8.321, 0, 0, 0, 63.443, 0, 0, 0)
+navigation_mesh = SubResource("NavigationMesh_272bh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 0.99999976, 0, 0, 0, 1, 0, -0.013938016, 0)
+mesh = SubResource("BoxMesh_0xm2m")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_h2yge")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-3.3068717, 0, 0, 0, 8.320998, 0, 0, 0, 63.443, -25.92582, 4.4359493, 0)
+mesh = SubResource("BoxMesh_1bvp3")
+skeleton = NodePath("../NavigationRegion3D")
+
+[node name="PlayerSpawner" type="Node3D" parent="."]
+script = ExtResource("1_1bvp3")
+player_scene = ExtResource("1_0xm2m")
+spawn_points = Array[Vector3]([Vector3(0, 1, 0), Vector3(5, 1, 0), Vector3(0, 1, 5), Vector3(0, 0, 0)])
+
+[node name="Mouse4" parent="." instance=ExtResource("2_h2yge")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9410024, 0.5232182, -4.6164618)
+
+[node name="Mouse5" parent="." instance=ExtResource("2_h2yge")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.931745, 0.5232192, -2.8188095)
+
+[node name="Mouse6" parent="." instance=ExtResource("2_h2yge")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.76158476, 0.52321917, -1.1749058)
+
+[node name="Mouse" parent="." instance=ExtResource("2_h2yge")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.7977777, 0.30914363, -4.989718)
+
+[node name="Mouse2" parent="." instance=ExtResource("2_h2yge")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.788521, 0.30914462, -3.1920662)
+
+[node name="Mouse3" parent="." instance=ExtResource("2_h2yge")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6183596, 0.30914462, -1.5481621)
+
+[node name="Hud" parent="." instance=ExtResource("3_h2yge")]
