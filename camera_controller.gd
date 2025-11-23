@@ -1,6 +1,3 @@
-# camera_controller.gd
-# Альтернативный вариант: отдельная камера, следующая за игроком
-# Добавьте этот скрипт к узлу Camera3D в главной сцене (main.tscn)
 
 extends Camera3D
 
@@ -12,7 +9,6 @@ var target: CharacterBody3D = null
 var camera_rotation: Vector2 = Vector2.ZERO
 
 func _ready():
-	# Ждем, пока заспавнится локальный игрок
 	await get_tree().create_timer(0.5).timeout
 	_find_local_player()
 
@@ -41,21 +37,16 @@ func _input(event):
 func _physics_process(delta):
 	if not target:
 		return
-	
-	# Поворачиваем игрока по Y
+
 	target.rotation.y = camera_rotation.y
-	
-	# Вычисляем позицию камеры
+
 	var target_pos = target.global_position
 	var rotated_offset = offset.rotated(Vector3.UP, camera_rotation.y)
 	var desired_position = target_pos + rotated_offset
-	
-	# Плавно следуем за игроком
+
 	global_position = global_position.lerp(desired_position, follow_speed * delta)
-	
-	# Применяем вертикальный поворот камеры
+
 	rotation.x = camera_rotation.x
 	rotation.y = camera_rotation.y
-	
-	# Смотрим на игрока
+
 	look_at(target_pos + Vector3.UP * 1.5, Vector3.UP)

@@ -10,7 +10,6 @@ const EXIT_BUTTON_PATH = "CenterContainer/VBoxContainer/ExitButton"
 @onready var exit_button: Button = get_node(EXIT_BUTTON_PATH)
 
 func _ready():
-	# Проверяем что сигналы еще не подключены
 	if start_button and exit_button:
 		if not start_button.pressed.is_connected(_on_start_button_pressed):
 			start_button.pressed.connect(_on_start_button_pressed)

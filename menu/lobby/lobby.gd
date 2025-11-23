@@ -1,6 +1,3 @@
-# lobby.gd
-# Создайте сцену lobby.tscn с интерфейсом лобби
-
 extends CanvasLayer
 
 @onready var host_button = $Panel/VBoxContainer/HostButton

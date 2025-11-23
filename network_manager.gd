@@ -73,8 +73,7 @@ func _register_player(new_player_info):
 	var new_player_id = multiplayer.get_remote_sender_id()
 	players[new_player_id] = new_player_info
 	emit_signal("player_connected", new_player_id, new_player_info)
-	
-	# Если мы сервер, отправляем инфо о всех игроках новому игроку
+
 	if multiplayer.is_server():
 		for peer_id in players:
 			_register_player.rpc_id(new_player_id, players[peer_id])

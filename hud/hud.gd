@@ -1,9 +1,8 @@
-# hud.gd - Обновленная версия с мультиплеером
 
 extends CanvasLayer
 
 var total_mice: int = 0
-var player_kills: Dictionary = {} # {player_id: kills}
+var player_kills: Dictionary = {}
 var remaining_time: float = 30.0
 var is_game_over: bool = false
 
@@ -18,12 +17,10 @@ func _ready():
 	add_to_group("hud")
 	_update_labels()
 	
-	# Инициализируем счетчики для всех игроков
 	for peer_id in NetworkManager.players:
 		player_kills[peer_id] = 0
 
 func _process(delta):
-	# Таймер работает только на сервере
 	if not multiplayer.is_server() or is_game_over:
 		return
 	
@@ -33,8 +30,7 @@ func _process(delta):
 		remaining_time = 0
 		is_game_over = true
 		sync_time_up.rpc()
-	
-	# Синхронизируем время с клиентами
+
 	sync_timer.rpc(remaining_time)
 
 @rpc("authority", "call_local", "reliable")
@@ -71,8 +67,7 @@ func add_kill(player_id: int):
 	
 	if multiplayer.is_server():
 		sync_kills.rpc(player_kills)
-		
-		# Проверяем, все ли мыши убиты
+
 		var total_kills = 0
 		for kills in player_kills.values():
 			total_kills += kills
@@ -89,7 +84,6 @@ func sync_kills(kills_data: Dictionary):
 	_update_labels()
 
 func _update_labels():
-	# Общий счетчик убийств
 	var total_kills = 0
 	for kills in player_kills.values():
 		total_kills += kills
@@ -99,12 +93,10 @@ func _update_labels():
 	
 	if timer_label:
 		timer_label.text = "Время: %.1f сек" % remaining_time
-	
-	# Обновляем таблицу лидеров
+
 	if leaderboard:
 		var text = "=== Игроки ===\n"
-		
-		# Сортируем игроков по количеству убийств
+
 		var sorted_players = player_kills.keys()
 		sorted_players.sort_custom(func(a, b): return player_kills[a] > player_kills[b])
 		

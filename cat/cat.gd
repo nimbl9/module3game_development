@@ -1,5 +1,3 @@
-# cat.gd - Обновленная версия с мультиплеером
-
 extends CharacterBody3D
 
 @export var speed: float = 5.0
@@ -21,26 +19,22 @@ var kills: int = 0
 
 func _ready():
 	print("Кот готов! Authority: %d, Мой ID: %d" % [get_multiplayer_authority(), multiplayer.get_unique_id()])
-	
-	# Настройка камеры только для локального игрока
+
 	if is_multiplayer_authority():
-		print("✅ Это МОЙ кот! Включаю управление.")
+		print("Это МОЙ кот! Включаю управление.")
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		if camera:
 			camera.current = true
-		# Скрываем свою модель для локального игрока (опционально)
 		if mesh_instance:
 			mesh_instance.visible = false
 	else:
-		print("👥 Это удаленный игрок")
-		# Удаляем камеру для удаленных игроков
+		print("Это удаленный игрок")
 		if camera:
 			camera.queue_free()
 			camera = null
 	
 	add_to_group("player")
 	
-	# Установка имени игрока
 	if name_label:
 		player_id = get_multiplayer_authority()
 		if NetworkManager.players.has(player_id):
@@ -49,8 +43,7 @@ func _ready():
 			name_label.text = "Player %d" % player_id
 	
 	await get_tree().process_frame
-	
-	# HUD только для локального игрока
+
 	if is_multiplayer_authority():
 		hud = get_tree().get_first_node_in_group("hud")
 		if hud:
@@ -76,8 +69,7 @@ func _physics_process(delta):
 	if not is_multiplayer_authority():
 		return
 	
-	# ДЕБАГ: проверка что функция вызывается
-	if Engine.get_frames_drawn() % 60 == 0: # каждую секунду
+	if Engine.get_frames_drawn() % 60 == 0:
 		print("Кот %d обрабатывает физику. Позиция: %s" % [get_multiplayer_authority(), global_position])
 	
 	if not is_on_floor():
@@ -121,7 +113,6 @@ func attack():
 	for result in results:
 		var collider = result.collider
 		if collider != self and collider.is_in_group("mouse"):
-			# Отправляем запрос на урон на сервер
 			if multiplayer.is_server():
 				if collider.has_method("take_damage"):
 					collider.take_damage(attack_damage, player_id)

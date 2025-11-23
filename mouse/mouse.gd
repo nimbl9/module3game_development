@@ -1,5 +1,3 @@
-# mouse.gd - Обновленная версия с мультиплеером
-
 extends CharacterBody3D
 
 @export var hp: int = 30
@@ -32,7 +30,6 @@ func _ready():
 	death_sound = get_node_or_null("DeathSound")
 
 func _physics_process(delta):
-	# Логика мышей работает только на сервере
 	if not multiplayer.is_server():
 		return
 	
@@ -137,7 +134,6 @@ func _set_new_wander_direction():
 	wander_timer = randf_range(2.0, 5.0)
 
 func take_damage(damage: int, attacker_id: int = 0):
-	# Для обратной совместимости: если вызвано БЕЗ attacker_id
 	if not multiplayer.is_server():
 		return
 	
@@ -151,7 +147,6 @@ func take_damage(damage: int, attacker_id: int = 0):
 	else:
 		print("Мышь получила урон, осталось хп: %d" % hp)
 	
-	# Синхронизируем HP со всеми клиентами
 	sync_hp.rpc(hp)
 	
 	if hp > 0:
@@ -181,8 +176,7 @@ func die(attacker_id: int = 0):
 	
 	is_dead = true
 	print("Мышь умерла, убил игрок: ", attacker_id)
-	
-	# Уведомляем игрока об убийстве
+
 	var players = get_tree().get_nodes_in_group("player")
 	for player in players:
 		if player.get_multiplayer_authority() == attacker_id:
